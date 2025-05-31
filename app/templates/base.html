@@ -72,8 +72,15 @@
   <header>
     <nav>
       <ul>
-        <li><a href="{% url 'cars_list' %}">Carros</a></li>
-        <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+        {%if user.is_authenticated%}
+          <li> Olá, {{ user.username }}!</li> 
+          <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+          <li><a href="{% url 'logout' %}">Sair</a></li>
+        {% else %}
+          <li><a href="{% url 'cars_list' %}">Carros</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Registrar</a></li> 
+        {% endif %} 
       </ul>
     </nav>
   </header>
@@ -84,7 +91,7 @@
   </main>
 
   <footer>
-    <p>&copy; 2023 PycodeBR Multimarcas</p>
+    <p>&copy; 2025 Moreira Multimarcas</p>
   </footer>
 </body>
 </html>
