@@ -1,24 +1,28 @@
 from django import forms
-from cars.models import Brand, Car
-
-class CarForm(forms.Form):
-    model = forms.CharField(max_length=200, label='Modelo')
-    brand = forms.ModelChoiceField(Brand.objects.all(), label='Marca')
-    factory_year = forms.IntegerField(label='Ano de Fabricação')
-    model_year = forms.IntegerField(label='Ano do Modelo')
-    plate = forms.CharField(max_length=10, label='Placa')
-    value = forms.FloatField(label='Valor')
-    photo = forms.ImageField(required=False, label='Foto')
+from cars.models import Car
     
-    def save(self, commit=True):
-        car = Car(
-            model=self.cleaned_data['model'],
-            brand=self.cleaned_data['brand'],
-            factory_year=self.cleaned_data['factory_year'],
-            model_year=self.cleaned_data['model_year'],
-            plate=self.cleaned_data['plate'],
-            value=self.cleaned_data['value'],
-            photo=self.cleaned_data.get('photo', None)
-        )
-        car.save()
-        return car
+class CarModelForm(forms.ModelForm):
+    class Meta:
+        model = Car        
+        fields = '__all__'  # Use all fields from the Car model
+        labels = {
+            'model': 'Modelo',
+            'brand': 'Marca',
+            'factory_year': 'Ano de Fabricação',
+            'model_year': 'Ano do Modelo',
+            'plate': 'Placa',
+            'value': 'Valor',
+            'photo': 'Foto'
+        }
+        
+    def clean_value(self):
+        value = self.cleaned_data.get('value')
+        if value < 10000:
+            self.add_error('value',"O valor mínimo do carro deve ser de R$10.000")
+        return value        
+    
+    def clean_factory_year(self):
+        factory_year = self.cleaned_data.get('factory_year')
+        if factory_year < 1950:
+            self.add_error('factory_year', "O ano mínimo de fabricação é 1950")
+        return factory_year

@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="registration-container">
+    <div class="registration-card">
+        <div class="card-header">
+            <h3>Registro de Usuário</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">Usuário:</label>
+                    {{ user_form.username }}
+                    {% if user_form.username.errors %}
+                        <div class="error-message">
+                            {{ user_form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
+                    {{ user_form.password1 }}
+                    {% if user_form.password1.errors %}
+                        <div class="error-message">
+                            {{ user_form.password1.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ user_form.password2.id_for_label }}">Confirmação de Senha:</label>
+                    {{ user_form.password2 }}
+                    {% if user_form.password2.errors %}
+                        <div class="error-message">
+                            {{ user_form.password2.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if user_form.non_field_errors %}
+                    <div class="general-error">
+                        {{ user_form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="button-container">
+                    <button type="submit" class="register-btn">Registrar</button>
+                </div>
+            </form>
+            
+            <div class="login-link">
+                <p>Já possui uma conta? <a href="{% url 'login' %}">Faça login aqui</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.registration-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.general-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+.button-container {
+    margin-top: 25px;
+}
+
+.register-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.register-btn:hover {
+    background-color: #0056b3;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.login-link p {
+    margin: 0;
+    color: #666;
+}
+
+.login-link a {
+    color: #6f42c1;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Reset para campos do Django */
+.registration-card input[type="text"],
+.registration-card input[type="password"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+</style>
+
+
+{% endblock content %}
