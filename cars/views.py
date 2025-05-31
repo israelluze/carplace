@@ -1,29 +1,29 @@
 from django.shortcuts import render, redirect
 from cars.models import Car
 from cars.forms import CarModelForm
+from django.views import View
+from django.views.generic import ListView,CreateView
 
-def cars_view(request): 
-    
-    search = request.GET.get('search')
-    if search:
-        car_list = Car.objects.filter(model__icontains=search).order_by('model')  
-    else:
-        car_list = Car.objects.all().order_by('model')        
-    
-    return render(request, 'cars.html', {
-        'car_list':car_list
-    })
-    
-def new_car_view(request):
-    if request.method == "POST":
-        form = CarModelForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('cars_list')  # Assuming you have a URL named 'cars_list'
-        # Se não for válido, cai aqui e renderiza o formulário com erros
-    else:
-        form = CarModelForm()
-    return render(request, 'new_car.html', {'newcar_form': form})
+class CarsListView(ListView):
+    model = Car
+    template_name = 'cars.html'
+    context_object_name = 'car_list'
+
+    def get_queryset(self):
+        cars = super().get_queryset().order_by('model')
+        search = self.request.GET.get('search')
+        if search:
+            return super().get_queryset().filter(model__icontains=search).order_by('model')
+        return cars  
+
+class NewCarCreateView(CreateView):
+    model = Car
+    form_class = CarModelForm
+    template_name = 'new_car.html'
+    success_url = '/cars/'  # Redirect to the cars list after successful creation
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 
 

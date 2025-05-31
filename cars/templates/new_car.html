@@ -9,7 +9,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                {% for field in newcar_form %}
+                {% for field in form %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
                         {{ field }}
@@ -21,9 +21,9 @@
                     </div>
                 {% endfor %}
 
-                {% if newcar_form.non_field_errors %}
+                {% if form.non_field_errors %}
                     <div class="general-error">
-                        {{ newcar_form.non_field_errors }}
+                        {{ form.non_field_errors }}
                     </div>
                 {% endif %}
 
